@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WindowsFormsApp1
+{
+    public partial class Zadacha1v2 : Form
+    {
+        public Zadacha1v2()
+        {
+            InitializeComponent();
+        }
+
+        private void Zadacha1v2_Load(object sender, EventArgs e)
+        {
+            // TODO: данная строка кода позволяет загрузить данные в таблицу "dataSet1.accounting". При необходимости она может быть перемещена или удалена.
+            this.accountingTableAdapter.Fill(this.dataSet1.accounting);
+            // TODO: данная строка кода позволяет загрузить данные в таблицу "dataSet1.delivery". При необходимости она может быть перемещена или удалена.
+            this.deliveryTableAdapter.Fill(this.dataSet1.delivery);
+            QueryZapr1();
+
+        }
+        
+        private void QueryZapr1() {
+
+
+            int count = int.Parse(txtNumber.Text);
+            dataSet1.Zadacha1.Clear();
+            foreach(DataSet1.accountingRow aRow in dataSet1.accounting.Rows)
+            {
+                foreach(DataSet1.deliveryRow dRow in dataSet1.delivery.Rows)
+                {   
+                    if (aRow.code_of_material == dRow.code_of_material && aRow.number_of_warehouse == count)
+                    {
+                        DataSet1.Zadacha1Row zRow = dataSet1.Zadacha1.NewZadacha1Row();
+                        zRow.code_of_material = aRow.code_of_material;
+                        zRow.number_of_reception_document = aRow.number_of_reception_document;
+                        zRow.receipt_date = aRow.receipt_date;
+                        zRow.count = aRow.count;
+                        zRow.number_of_contract = dRow.number_of_contract;
+                        zRow.plan = dRow.plan;
+                        zRow.date_of_end = dRow.date_of_end;
+                        dataSet1.Zadacha1.Rows.Add(zRow);
+                        break;
+
+
+
+                    }
+
+
+                }
+
+            }
+        }
+
+        private void btnFill_Click(object sender, EventArgs e)
+        {
+            QueryZapr1();
+        }
+    }
+}
